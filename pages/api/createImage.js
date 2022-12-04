@@ -19,9 +19,10 @@ export default async function handler(req, res) {
         if (!authToken) {
             return res.status(401).json({status: 'error', error: 'Expired authorization.'});
         }
+
         const imageUrl = await OpenAIService.createImage(req.body.input);
         const paymentResult = await new HandCashService(authToken).pay({
-            destination: 'brandonbryant', amount: 0.05, currencyCode: 'USD'
+            destination: 'brandonbryant', amount: 0.005, currencyCode: 'USD'
         });
         return res.status(200).json({status: 'created', imageUrl });
     } catch (error) {
