@@ -133,7 +133,7 @@ export default function Home({redirectionUrl, sessionToken, user}) {
                     }}
                 >
                     <input type="text" className="form-input" style={{ width: "60%", color: "black" }} placeholder="Give a suggestion" onChange={(event) => setInput(event.target.value)} />
-                    <button type="submit" className="ml-3" disabled={imageResult?.status === 'pending'}>Generate Image ($0.005)</button>
+                    <button type="submit" className="ml-3" disabled={imageResult?.status === 'pending'}>Generate Image ($0.03)</button>
                 </form>
             </div>
 

@@ -23,7 +23,7 @@ export default class HandCashService {
             payments: [
                 {destination, amount, currencyCode},
             ],
-            description: 'Testing Connect SDK',
+            description: 'AI Image Generator!',
         });
     }
 
