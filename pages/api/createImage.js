@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
         const imageUrl = await OpenAIService.createImage(req.body.input);
         const paymentResult = await new HandCashService(authToken).pay({
-            destination: 'brandonbryant', amount: 0.02, currencyCode: 'USD'
+            destination: 'brandonbryant', amount: 0.04, currencyCode: 'USD'
         });
         return res.status(200).json({status: 'created', imageUrl });
     } catch (error) {
