@@ -10,11 +10,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         receivers: [
           {
             destination: "brandon",
-            amount: 0.005,
-          },
-          {
-            destination: "apagut",
-            amount: 0.005,
+            amount: 0.01,
           },
         ],
         note: "Connect SDK Beta",

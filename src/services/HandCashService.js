@@ -18,7 +18,7 @@ export default class HandCashService {
     return this.account.profile.getCurrentProfile();
   }
 
-  async pay({ paymentParameters }) {
+  async pay( paymentParameters ) {
     return this.account.wallet.pay(paymentParameters);
   }
 

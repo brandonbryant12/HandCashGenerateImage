@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
+import HandCashService from "../src/services/HandCashService";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ query, req }) {
@@ -14,12 +15,14 @@ export const getServerSideProps = withIronSessionSsr(
         },
       };
     } else {
-      // const balance = await new HandCashService(
-      //   req.session.authToken
-      // ).getBalance();
+      const balance = await new HandCashService(
+        req.session.authToken
+      ).getBalance();
+      console.log(balance);
       return {
         props: {
           user: req.session.user,
+          balance: balance,
         },
       };
     }
@@ -27,12 +30,11 @@ export const getServerSideProps = withIronSessionSsr(
   sessionOptions
 );
 
-export default function HomePage({ redirectionUrl, sessionToken, user }) {
+export default function HomePage({ sessionToken, user, balance }) {
   const [paymentResult, setPaymentResult] = useState({ status: "none" });
   const [imageResult, setImageResult] = useState({ status: "none" });
-  const [input, setInput] = useState(""); // define input state variable
+  const [input, setInput] = useState("");
 
-  console.log(paymentResult);
   const pay = async () => {
     setPaymentResult({ status: "pending" });
     const response = await fetch(`/api/pay`, {
@@ -42,7 +44,6 @@ export default function HomePage({ redirectionUrl, sessionToken, user }) {
       },
     });
     setPaymentResult(await response.json());
-    console.log(paymentResult);
   };
 
   const createImage = async (input) => {
@@ -58,10 +59,6 @@ export default function HomePage({ redirectionUrl, sessionToken, user }) {
     setImageResult(await response.json());
   };
 
-  const onDisconnect = async () => {
-    window.location.href = "/";
-  };
-
   return (
     <div className="flex flex-col mx-auto items-center justify-center min-h-screen space-y-6">
       <h1 className="text-3xl font-bold">AI Image generator</h1>
@@ -72,6 +69,7 @@ export default function HomePage({ redirectionUrl, sessionToken, user }) {
         }}
       >
         <div className="flex flex-col justify-center items-center max-w-md space-y-4">
+          <p>Balance ${balance[1].spendableBalance.toFixed(2)}</p>
           <input
             type="text"
             placeholder="Give a suggestion"
