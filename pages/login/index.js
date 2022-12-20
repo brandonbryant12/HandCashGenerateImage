@@ -29,9 +29,9 @@ export default function LoginPage({ redirectionUrl }) {
   return (
     <>
       <h1>Login page</h1>
+      <p>{redirectionUrl}</p>
       <a href={redirectionUrl}>
-        <p>{redirectionUrl}</p>
-        <button className="bg-black text-white px-4 py-3 hover:bg-black/90">
+        <button className="bg-black text-white px-4 py-3 hover:bg-black/70">
           Connect App
         </button>
       </a>
