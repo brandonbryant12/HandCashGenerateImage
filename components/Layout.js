@@ -1,9 +1,9 @@
 import Head from "next/head";
-import Image from "next/image";
+import AppBar from "./AppBar";
 
-const Layout = ({ children }) => {
+const Layout = ({ user, balance, children }) => {
   return (
-    <div>
+    <div className=" min-h-screen">
       <Head>
         <title>AI Image Generator</title>
         <meta
@@ -12,13 +12,17 @@ const Layout = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col h-screen w-full">
-        <div className="flex-grow flex flex-col justify-center items-center bg-gradient-to-b from-darkBackground-900 to-darkBackground-900">
-          <div className="flex-grow flex justify-center items-center">
-            {children}
-          </div>
+      <main className="flex flex-col h-screen">
+        <header className="sticky top-0 w-full z-50 glass-appbar">
+          <AppBar
+            user={user}
+            balance={balance}
+          ></AppBar>
+        </header>
+        <div className="flex justify-center items-center flex-grow">
+          {children}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -10,12 +10,15 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         receivers: [
           {
             destination: "brandon",
-            amount: 0.01,
+            amount: 0.001,
           },
         ],
         note: "Connect SDK Beta",
         currencyCode: "USDC",
       });
+      const balance = await new HandCashService(authToken).getBalance();
+      console.log('Balance updated');
+      console.log()
       return res.status(200).json({ paymentResult });
     } else return res.status(401).json({ status: "error", error: "Expired authorization." });
   } catch (error) {

@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
 import HandCashService from "../src/services/HandCashService";
+import Layout from "../components/Layout";
+import ImageDialog from "../components/ImageDialog";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
+import { Result } from "postcss";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ query, req }) {
@@ -34,6 +40,12 @@ export default function HomePage({ sessionToken, user, balance }) {
   const [paymentResult, setPaymentResult] = useState({ status: "none" });
   const [imageResult, setImageResult] = useState({ status: "none" });
   const [input, setInput] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  console.log("User");
+  console.log(user);
+  console.log("Balance");
+  console.log(balance);
 
   const pay = async () => {
     setPaymentResult({ status: "pending" });
@@ -43,6 +55,10 @@ export default function HomePage({ sessionToken, user, balance }) {
         Authorization: `Bearer ${sessionToken}`,
       },
     });
+    if (response.status === 200) {
+      toast.success("Payment success!");
+    }
+    // setIsOpen(true);
     setPaymentResult(await response.json());
   };
 
@@ -60,87 +76,55 @@ export default function HomePage({ sessionToken, user, balance }) {
   };
 
   return (
-    <div className="flex flex-col mx-auto items-center justify-center min-h-screen space-y-6">
-      <h1 className="text-3xl font-bold">AI Image generator</h1>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          createImage(input);
+    <>
+      <ToastContainer />
+      <ImageDialog
+        open={isOpen}
+        onClose={() => {
+          setIsOpen(false);
         }}
-      >
-        <div className="flex flex-col justify-center items-center max-w-md space-y-4">
-          <p>Balance ${balance[1].spendableBalance.toFixed(2)}</p>
-          <input
-            type="text"
-            placeholder="Give a suggestion"
-            onChange={(event) => setInput(event.target.value)}
-            className="w-full"
-          />
-          <a>
-            <button
-              type="submit"
-              disabled={imageResult?.status === "pending"}
-              className="bg-black text-white px-4 py-3 hover:bg-black/70 w-full"
-              onClick={pay}
-            >
-              Generate Image $0.04
-            </button>
-          </a>
-        </div>
-      </form>
-      {imageResult.status === "created" && (
-        <div
-          className="w-full flex m-6 border border-brandLight p-4 rounded-xl bg-brandLight/5 gap-x-6 items-center"
-          style={{ width: "50%", height: "auto" }}
+        imageResult={imageResult}
+      />
+      <Layout user={user} balance={balance}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            // createImage(input);
+          }}
+          className="glass-card"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-10 h-10 text-brandLight"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          <div className="flex flex-col p-10 items-start justify-center mx-auto ">
+            <h1 className="text-4xl text-white font-semibold mb-2 w-80">
+              Pay to Generate
+            </h1>
+            <h5 className="text-sm text-white mb-6 w-80">
+              No subscriptions, no emails, no registration.
+            </h5>
+            <textarea
+              type="text"
+              placeholder="Photorealistic picture of an android looking man flying over the lost city of Atlantis"
+              onChange={(event) => setInput(event.target.value)}
+              className="text-base rounded mb-2 w-full bg-black/80 backdrop-blur-xl font-mono text-green-500"
+              rows={6}
+              maxLength={400}
+              resize={"none"}
             />
-          </svg>
-          <div>
-            <img
-              src={imageResult.imageUrl}
-              alt="Stylized image"
-              className="w-full"
-            />
+            <a>
+              <button
+                type="submit"
+                disabled={imageResult?.status === "pending"}
+                className="bg-slate-900 px-6 py-3 hover:bg-slate-800 rounded transition-all duration-150"
+                onClick={pay}
+              >
+                <div className="flex items-center justify-center space-x-2">
+                  <Image src="/icon_usdc.png" height={24} width={24}></Image>
+                  <h6 className="text-white tracking-wider">Pay $0.05</h6>
+                </div>
+              </button>
+            </a>
           </div>
-        </div>
-      )}
-      {imageResult.status === "error" && (
-        <div className="flex w-full  m-6 border border-red-400 p-4 rounded-xl bg-red-500/3 gap-x-6 items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-10 h-10 text-red-400"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-
-          <div>
-            <p className="text-lg text-white font-bold">
-              Image creation failed
-            </p>
-            <p className="text-white/70">{imageResult.message}</p>
-          </div>
-        </div>
-      )}
-    </div>
+        </form>
+      </Layout>
+    </>
   );
 }
