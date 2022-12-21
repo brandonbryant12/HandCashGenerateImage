@@ -1,21 +1,23 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        "./pages/**/*.{js,ts,jsx,tsx}",
-        "./components/**/*.{js,ts,jsx,tsx}",
+      "./pages/**/*.{js,ts,jsx,tsx}",
+      "./components/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {
-            colors: {
-                brandLight: "#74FFAC",
-                brandNormal: "#38CB7C",
-                brandDark: "#00994F",
-                darkBackground: {
-                    800: "#1D1D1D",
-                    900: "#121212",
-                },
-            },
+      extend: {
+        fontFamily: {
+          Figtree: ["Figtree", "sans-serif"],
         },
+        colors: {
+          brandGreen: "#41FB74",
+          brandDarkGreen: "#3EC163",
+          brandBlue: "#084C70",
+          brandDarkBlue: "#031A28",
+          twitterBlue: "#1DA1F2",
+          twitterDarkBlue: "#1077AC",
+        },
+      },
     },
-    plugins: [],
-}
+    plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
+  };
+  

@@ -1,44 +1,30 @@
 import Head from "next/head";
-import Image from "next/image";
+import AppBar from "./AppBar";
 
-const Layout = ({children}) => {
-    return (
-        <div>
-            <Head>
-                <title>HandCash Connect NextJS</title>
-                <meta name="description" content="Getting started with HandCash Connect"/>
-                <link rel="icon"
-                      href="/favicon.ico"/>
-            </Head>
-            <div className="flex flex-col h-screen w-full">
-                <a
-                    className="flex justify-center items-center h-fit py-1 px-6 bg-darkBackground-800"
-                    href="https://handcash.io"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    <Image
-                        width={246}
-                        height={64}
-                        src="/handcash_overDark.png"
-                        alt="handcash dark logo"
-                    ></Image>
-                </a>
-
-                <div className="flex-grow flex flex-col justify-center items-center bg-gradient-to-b from-darkBackground-900 to-darkBackground-900">
-                    <div
-                        className="flex-grow flex justify-center items-center">
-                        {children}
-                    </div>
-                    <footer className="p-4 grow-0">
-                        <div className="flex flex-col items-center justify-center w-full mb-6 space-y-3">
-                            <p className="text-xs tracking-wider">© HandCash Labs, S.L. 2022</p>
-                        </div>
-                    </footer>
-                </div>
-            </div>
+const Layout = ({ user, balance, children }) => {
+  return (
+    <div className=" min-h-screen">
+      <Head>
+        <title>AI Image Generator</title>
+        <meta
+          name="description"
+          content="Getting started with HandCash Connect"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="flex flex-col h-screen">
+        <header className="sticky top-0 w-full z-50 glass-appbar">
+          <AppBar
+            user={user}
+            balance={balance}
+          ></AppBar>
+        </header>
+        <div className="flex justify-center items-center flex-grow">
+          {children}
         </div>
-    );
+      </main>
+    </div>
+  );
 };
 
 export default Layout;
