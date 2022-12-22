@@ -121,7 +121,7 @@ export default function HomePage({ sessionToken, user, balance }) {
         <Layout user={user} balance={balance}>
           <div className="flex flex-col justify-center items-start h-full max-w-xs">
             <p className="text-slate-400 uppercase tracking-wider text-xs pt-2 pb-8">
-              We couldn't process your request.
+              We could not process your request.
               <br />
               Please, try later.
             </p>
