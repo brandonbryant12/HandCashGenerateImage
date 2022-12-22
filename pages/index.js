@@ -36,9 +36,9 @@ export const getServerSideProps = withIronSessionSsr(
   sessionOptions
 );
 
-export default function HomePage({ sessionToken, user, balance }) {
-  const [paymentResult, setPaymentResult] = useState({ status: "none" });
+export default function HomePage({ user, balance }) {
   const [imageResult, setImageResult] = useState({ status: "none" });
+  const [imageHistoryResult, setImageHistoryResult] = useState({ status: "none", images: [] });
   const [input, setInput] = useState("");
 
   const imgList = [
@@ -54,20 +54,6 @@ export default function HomePage({ sessionToken, user, balance }) {
     "/examples/10.jpg",
   ];
 
-  const pay = async () => {
-    setPaymentResult({ status: "pending" });
-    const response = await fetch(`/api/pay`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${sessionToken}`,
-      },
-    });
-    if (response.status === 200) {
-      toast.success("Payment completed! $0.05");
-    }
-    setPaymentResult(await response.json());
-  };
-
   const createImage = async (input) => {
     setImageResult({ status: "pending" });
 
@@ -77,6 +63,14 @@ export default function HomePage({ sessionToken, user, balance }) {
       body: JSON.stringify({ input }),
     });
     setImageResult(await response.json());
+  };
+
+  const getImageHistory = async () => {
+    const response = await fetch(`/api/getImages`, {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    });
+    setImageHistoryResult(await response.json());
   };
 
   function isInputTextValid(text) {

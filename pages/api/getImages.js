@@ -1,9 +1,9 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
-import CreateImageUseCase from "../../src/useCases/createImageUseCase";
+import GetImagesUseCase from "../../src/useCases/getImagesUseCase";
 
 export default withIronSessionApiRoute(async function handler(req, res) {
-  if (req.method !== "POST") {
+  if (req.method !== "GET") {
     return res.status(404);
   }
   try {
@@ -14,8 +14,8 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         .json({ status: "error", error: "Expired authorization." });
     }
 
-    const imageUrl = await new CreateImageUseCase(user.handle, req.body.input, authToken).execute();
-    return res.status(200).json({ status: "created", imageUrl });
+    const images = await new GetImagesUseCase(user.handle).execute();
+    return res.status(200).json({ status: "fetched", images });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ status: "error", message: error.toString() });
