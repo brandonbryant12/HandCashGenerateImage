@@ -15,14 +15,14 @@ export default function AppBar({ user, balance }) {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+      <div className="mx-auto w-full p-6 border-b border-slate-200 bg-slate-100">
+        <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link href="/">
                 <a>
-                  <h1 className="text-white text-3xl font-bold text-center">
-                    <span className="text-amber-400">ai</span>magination
+                  <h1 className="text-slate-700 text-3xl font-bold text-center">
+                    <span className="text-amber-500">ai</span>magination
                   </h1>
                 </a>
               </Link>

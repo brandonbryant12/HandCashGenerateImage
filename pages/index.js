@@ -4,11 +4,11 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
 import HandCashService from "../src/services/HandCashService";
 import Layout from "../components/Layout";
-import ImageDialog from "../components/ImageDialog";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 import { Result } from "postcss";
+import { BarLoader } from "react-spinners";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ query, req }) {
@@ -40,12 +40,19 @@ export default function HomePage({ sessionToken, user, balance }) {
   const [paymentResult, setPaymentResult] = useState({ status: "none" });
   const [imageResult, setImageResult] = useState({ status: "none" });
   const [input, setInput] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
 
-  console.log("User");
-  console.log(user);
-  console.log("Balance");
-  console.log(balance);
+  const imgList = [
+    "/examples/01.jpg",
+    "/examples/02.jpg",
+    "/examples/03.jpg",
+    "/examples/04.jpg",
+    "/examples/05.jpg",
+    "/examples/06.jpg",
+    "/examples/07.jpg",
+    "/examples/08.jpg",
+    "/examples/09.jpg",
+    "/examples/10.jpg",
+  ];
 
   const pay = async () => {
     setPaymentResult({ status: "pending" });
@@ -56,14 +63,15 @@ export default function HomePage({ sessionToken, user, balance }) {
       },
     });
     if (response.status === 200) {
-      toast.success("Payment success!");
+      toast.success("Payment completed! $0.05");
     }
-    // setIsOpen(true);
     setPaymentResult(await response.json());
   };
 
   const createImage = async (input) => {
+    console.log(input);
     setImageResult({ status: "pending" });
+    console.log(imageResult);
     const response = await fetch(`/api/createImage`, {
       method: "POST",
       headers: {
@@ -75,56 +83,147 @@ export default function HomePage({ sessionToken, user, balance }) {
     setImageResult(await response.json());
   };
 
-  return (
-    <>
-      <ToastContainer />
-      <ImageDialog
-        open={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-        imageResult={imageResult}
-      />
-      <Layout user={user} balance={balance}>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            // createImage(input);
-          }}
-          className="glass-card"
-        >
-          <div className="flex flex-col p-10 items-start justify-center mx-auto ">
-            <h1 className="text-4xl text-white font-semibold mb-2 w-80">
-              Pay to Generate
-            </h1>
-            <h5 className="text-sm text-white mb-6 w-80">
-              No subscriptions, no emails, no registration.
-            </h5>
-            <textarea
-              type="text"
-              placeholder="Photorealistic picture of an android looking man flying over the lost city of Atlantis"
-              onChange={(event) => setInput(event.target.value)}
-              className="text-base rounded mb-2 w-full bg-black/80 backdrop-blur-xl font-mono text-green-500"
-              rows={6}
-              maxLength={400}
-              resize={"none"}
-            />
-            <a>
-              <button
-                type="submit"
-                disabled={imageResult?.status === "pending"}
-                className="bg-slate-900 px-6 py-3 hover:bg-slate-800 rounded transition-all duration-150"
-                onClick={pay}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <Image src="/icon_usdc.png" height={24} width={24}></Image>
-                  <h6 className="text-white tracking-wider">Pay $0.05</h6>
-                </div>
-              </button>
-            </a>
+  function isInputTextValid(input) {
+    console.log(imageResult);
+    console.log(input);
+    if (input.lenth > 10) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function onChangeInputText(input) {
+    if (isInputTextValid(input)) {
+      setImageResult({ status: "ready" });
+    } else {
+      setImageResult({ status: "none" });
+    }
+    setInput(input);
+  }
+
+  if (imageResult.status == "pending") {
+    return (
+      <>
+        <Layout user={user} balance={balance}>
+          <div className="flex flex-col justify-center items-start h-full max-w-xs">
+            <BarLoader color="#f59e0b" width={320} />
+            <p className="text-slate-400 uppercase tracking-wider text-xs pt-2 pb-8">
+              Processing image...
+            </p>
           </div>
-        </form>
-      </Layout>
-    </>
-  );
+        </Layout>
+      </>
+    );
+  } else if (imageResult.status == "error") {
+    return (
+      <>
+        <Layout user={user} balance={balance}>
+          <div className="flex flex-col justify-center items-start h-full max-w-xs">
+            <p className="text-slate-400 uppercase tracking-wider text-xs pt-2 pb-8">
+              We couldn't process your request.
+              <br />
+              Please, try later.
+            </p>
+          </div>
+        </Layout>
+      </>
+    );
+  } else
+    return (
+      <>
+        <ToastContainer />
+
+        <Layout user={user} balance={balance}>
+          <div className="p-6">
+            <h5 className="text-slate-400 w-full mb-4 tracking-wide">
+              Start with a detailed description
+            </h5>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                // createImage(input);
+              }}
+              className="rounded shadow-md shadow-slate-200 bg-white"
+            >
+              <textarea
+                type="text"
+                placeholder="Photorealistic picture of an android looking man flying over the lost city of Atlantis"
+                onChange={(event) => onChangeInputText(event.target.value)}
+                className="border-none focus:ring-0 w-full border-white rounded-t-md p-4 prose placeholder:text-slate-400 text-slate-900"
+                rows={4}
+                maxLength={280}
+                resize={"none"}
+              />
+              <a>
+                <button
+                  type="submit"
+                  disabled={imageResult.status != "ready"}
+                  className="w-full h-full text-center px-6 py-4 border-t border-slate-200 hover:bg-slate-50 rounded-b"
+                  onClick={createImage}
+                >
+                  <div className="flex items-center justify-center space-x-2 ">
+                    <Image src="/icon_usdc.png" height={20} width={20}></Image>
+                    <h6 className="text-base font-semibold tracking-wide">
+                      Generate $0.05
+                    </h6>
+                  </div>
+                </button>
+              </a>
+            </form>
+
+            {imageResult.status === "created" ? (
+              <>
+                <div className="flex items-center my-8">
+                  <p className="text-slate-400 text-xs tracking-wider">
+                    RESULT
+                  </p>
+                  <div className="h-0 border-t border-slate-200 w-full ml-4"></div>
+                </div>
+                <div className="aspect-square bg-slate-300 rounded relative">
+                  <Image
+                    src={imageResult.imageUrl}
+                    layout="fill"
+                    objectFit="contain"
+                    className="absolute rounded"
+                  ></Image>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-slate-400 text-xs tracking-wide pt-2">
+                  You will only be charged for successful generations
+                </p>
+                <div className="flex items-center my-8">
+                  <p className="text-slate-400 text-xs tracking-wide">
+                    EXAMPLES
+                  </p>
+                  <div className="h-0 border-t border-slate-200 w-full ml-4"></div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 ">
+                  {imgList.map((imageUrl) => (
+                    <div
+                      className="aspect-square bg-slate-300 rounded relative"
+                      key={imageUrl}
+                    >
+                      <Image
+                        src={imageUrl}
+                        layout="fill"
+                        objectFit="contain"
+                        className="absolute rounded"
+                      ></Image>
+                    </div>
+                  ))}
+                </div>
+                <a href="mailto:b.bryant@handcash.io">
+                  <button className="text-center tracking-wide bg-slate-200 hover:bg-slate-300 w-full rounded py-4 mt-4 font-semibold">
+                    Contact Us
+                  </button>
+                </a>
+              </>
+            )}
+          </div>
+        </Layout>
+      </>
+    );
 }
