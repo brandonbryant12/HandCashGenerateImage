@@ -7,7 +7,7 @@ class MyDocument extends Document {
         <Head>
           <meta name="theme-color" content="#fff" />
         </Head>
-        <body>
+        <body className="bg-slate-100">
           <Main />
           <NextScript />
         </body>

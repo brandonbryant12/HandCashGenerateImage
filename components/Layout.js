@@ -13,13 +13,13 @@ const Layout = ({ user, balance, children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col h-screen">
-        <header className="sticky top-0 w-full z-50 glass-appbar">
+        <header className="sticky top-0 w-full z-50">
           <AppBar
             user={user}
             balance={balance}
           ></AppBar>
         </header>
-        <div className="flex justify-center items-center flex-grow">
+        <div className="flex justify-center items-start flex-grow">
           {children}
         </div>
       </main>
