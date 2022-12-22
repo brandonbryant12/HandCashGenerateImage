@@ -27,81 +27,58 @@ export const getServerSideProps = withIronSessionSsr(
 
 export default function LoginPage({ redirectionUrl }) {
   return (
-    <>
-      <h1>Login page</h1>
-      <p>{redirectionUrl}</p>
-      <a href={redirectionUrl}>
-        <button className="bg-black text-white px-4 py-3 hover:bg-black/70">
-          Connect App
-        </button>
-      </a>
-    </>
-    // <head>
-    //   <title>Pay Pistol | Login</title>
-    //   <meta name="description" content="The mass tipping app by HandCash" />
-    //   <link rel="icon" href="/favicon.ico" />
-    // </head>
-    // <body>
-    //   <div className="flex min-h-screen justify-center items-center">
-    //     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    //       <div className="max-w-sm space-y-4">
-    //         <div className="mb-10 flex flex-col items-center">
-    //           <h1>Logo Here</h1>
-    //           <h2 className="text-center text-3xl font-semibold text-white">
-    //             Image Generator
-    //           </h2>
-    //           <p className="mt-2 text-center text-sm text-slate-400">
-    //             AI Image generator with micropayments
-    //           </p>
-    //         </div>
-    //         <div>
-    //           <a href={redirectionUrl}>
-    //             <button className="w-full flex items-center justify-center space-x-2 rounded-lg bg-white hover:bg-slate-100 py-3 pl-4 pr-6 text-sm font-medium tracking-wider text-brandBlueDark">
-    //               <Image
-    //                 src="/monogram_green.svg"
-    //                 height={34}
-    //                 width={34}
-    //               ></Image>
-    //               <div className="text-brandDarkBlue">
-    //                 Connect with HandCash
-    //               </div>
-    //             </button>
-    //           </a>
-    //         </div>
-    //         <div>
-    //           <p className="text-center text-xs text-slate-400">
-    //             By connecting your wallet you are acknowledging that you read
-    //             and accepted our
-    //             <span>
-    //               {" "}
-    //               <Link href="legal/terms">
-    //                 <a
-    //                   target="_blank"
-    //                   rel="noopener noreferrer"
-    //                   className="link-item"
-    //                 >
-    //                   Terms of Service
-    //                 </a>
-    //               </Link>
-    //             </span>{" "}
-    //             and{" "}
-    //             <span>
-    //               {" "}
-    //               <Link href="legal/privacy">
-    //                 <a
-    //                   target="_blank"
-    //                   rel="noopener noreferrer"
-    //                   className="link-item"
-    //                 >
-    //                   Privacy Policy
-    //                 </a>
-    //               </Link>
-    //             </span>
-    //           </p>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </body>
+    <div className="bg-white sm:bg-transparent flex flex-col justify-center items-center h-screen">
+      <div className="sm:bg-white sm:shadow-md sm:max-w-sm p-6 sm:p-10 rounded">
+        <div className="h-full w-full flex flex-col justify-center items-center">
+          <Image
+            src="/dreamer_icon.jpeg"
+            height={72}
+            width={72}
+            className="rounded-2xl"
+          />
+          <h1 className="text-slate-700 text-3xl font-bold text-center mt-4">
+            <span className="text-amber-500">ai</span>magination
+          </h1>
+          <p className="prose mb-6 mt-2 text-center text-sm">
+            Transform your imagination into reality with AI.
+            <br />
+            No subscriptions, no ads, no sign ups.
+          </p>
+          <a href={redirectionUrl}>
+            <div className="bg-black text-white px-6 py-3 hover:bg-black/80 w-full tracking-wide rounded shadow flex items-center justify-center">
+              <Image src="/monogram_green.svg" height={32} width={32} />
+              <p className="ml-2">Connect with HandCash</p>
+            </div>
+          </a>
+          <p className="text-center text-xs text-slate-400 mt-2 prose">
+            By connecting your wallet you are accepting our<br/>
+            <span>
+              {" "}
+              <Link href="legal/terms">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" text-slate-900 underline hover:text-amber-500"
+                >
+                  Terms of Service
+                </a>
+              </Link>
+            </span>{" "}
+            and{" "}
+            <span>
+              <Link href="legal/privacy">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" text-slate-900 underline hover:text-amber-500"
+                >
+                  Privacy Policy
+                </a>
+              </Link>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
