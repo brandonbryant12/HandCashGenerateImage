@@ -21,7 +21,7 @@ class CreateImageUseCase {
                 }],
                 currencyCode: 'USDC',
         });
-        await PromptRepoository.create(this.#alias, this.#prompt, imageUrl);
+       //  await PromptRepoository.create(this.#alias, this.#prompt, imageUrl);
         return imageUrl;
     };
 
