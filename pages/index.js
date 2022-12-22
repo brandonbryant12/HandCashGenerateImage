@@ -69,24 +69,18 @@ export default function HomePage({ sessionToken, user, balance }) {
   };
 
   const createImage = async (input) => {
-    console.log(input);
     setImageResult({ status: "pending" });
-    console.log(imageResult);
+
     const response = await fetch(`/api/createImage`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${sessionToken}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({ input }),
     });
     setImageResult(await response.json());
   };
 
-  function isInputTextValid(input) {
-    console.log(imageResult);
-    console.log(input);
-    if (input.lenth > 10) {
+  function isInputTextValid(text) {
+    if (text.length > 0) {
       return true;
     } else {
       return false;
@@ -94,11 +88,13 @@ export default function HomePage({ sessionToken, user, balance }) {
   }
 
   function onChangeInputText(input) {
+    console.log(input);
     if (isInputTextValid(input)) {
       setImageResult({ status: "ready" });
     } else {
       setImageResult({ status: "none" });
     }
+    console.log(imageResult);
     setInput(input);
   }
 
@@ -142,7 +138,7 @@ export default function HomePage({ sessionToken, user, balance }) {
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-                // createImage(input);
+                createImage(input);
               }}
               className="rounded shadow-md shadow-slate-200 bg-white"
             >
@@ -160,7 +156,6 @@ export default function HomePage({ sessionToken, user, balance }) {
                   type="submit"
                   disabled={imageResult.status != "ready"}
                   className="w-full h-full text-center px-6 py-4 border-t border-slate-200 hover:bg-slate-50 rounded-b"
-                  onClick={createImage}
                 >
                   <div className="flex items-center justify-center space-x-2 ">
                     <Image src="/icon_usdc.png" height={20} width={20}></Image>
