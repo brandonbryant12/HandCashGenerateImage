@@ -1,6 +1,6 @@
 import HandCashService from "../services/HandCashService.js";
 import OpenAIService from "../services/openAIService.js";
-import PromptRepoository from '../repositories/promptRepository.js';
+// import PromptRepoository from '../repositories/promptRepository.js';
 
 const IMAGE_COST = 0.05;
 
