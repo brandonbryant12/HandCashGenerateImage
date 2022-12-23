@@ -38,20 +38,25 @@ export const getServerSideProps = withIronSessionSsr(
 
 export default function HomePage({ user, balance }) {
   const [imageResult, setImageResult] = useState({ status: "none" });
-  const [imageHistoryResult, setImageHistoryResult] = useState({ status: "none", images: [] });
+  const [imageHistoryResult, setImageHistoryResult] = useState({
+    status: "none",
+    images: [],
+  });
   const [input, setInput] = useState("");
 
   const imgList = [
     "/examples/01.jpg",
     "/examples/02.jpg",
     "/examples/03.jpg",
-    "/examples/04.jpg",
+    "/examples/04.png",
     "/examples/05.jpg",
     "/examples/06.jpg",
     "/examples/07.jpg",
     "/examples/08.jpg",
     "/examples/09.jpg",
     "/examples/10.jpg",
+    "/examples/11.png",
+    "/examples/12.jpg",
   ];
 
   const createImage = async (input) => {
@@ -123,9 +128,8 @@ export default function HomePage({ user, balance }) {
     return (
       <>
         <ToastContainer />
-
         <Layout user={user} balance={balance}>
-          <div className="p-6">
+          <div className="p-6 w-full max-w-7xl lg:mt-16">
             <h5 className="text-slate-400 w-full mb-4 tracking-wide">
               Start with a detailed description
             </h5>
@@ -134,13 +138,46 @@ export default function HomePage({ user, balance }) {
                 event.preventDefault();
                 createImage(input);
               }}
-              className="rounded shadow-md shadow-slate-200 bg-white"
+              className="rounded lg:rounded-none shadow-md shadow-slate-200 lg:shadow-none bg-white lg:bg-transparent"
             >
+              <div className="lg:flex items-center w-full justify-between hidden">
+                <input
+                  type="text"
+                  placeholder="Photorealistic picture of an android looking man flying over the lost city of Atlantis"
+                  onChange={(event) => onChangeInputText(event.target.value)}
+                  className="w-full grow shadow-md shadow-slate-200 border-none focus:ring-0 border-white rounded-l-md p-4 placeholder:text-slate-400 text-slate-900"
+                  maxLength={280}
+                />
+                <a>
+                  <button
+                    type="submit"
+                    disabled={imageResult.status != "ready"}
+                    className={
+                      imageResult.status != "ready"
+                        ? "flex justify-center w-56 bg-white px-6 py-4 rounded-r shadow-md shadow-slate-200 text-slate-300"
+                        : "flex justify-center w-56 bg-slate-900 px-6 py-4 hover:bg-slate-900/90 rounded-r shadow-md shadow-slate-200 text-white"
+                    }
+                  >
+                    <Image
+                      src="/icon_usdc.png"
+                      height={24}
+                      width={24}
+                      className={
+                        imageResult.status != "ready" ? "opacity-30" : ""
+                      }
+                    ></Image>
+                    <h6 className="text-base tracking-wider ml-2">
+                      Generate $0.05
+                    </h6>
+                  </button>
+                </a>
+              </div>
+
               <textarea
                 type="text"
                 placeholder="Photorealistic picture of an android looking man flying over the lost city of Atlantis"
                 onChange={(event) => onChangeInputText(event.target.value)}
-                className="border-none focus:ring-0 w-full border-white rounded-t-md p-4 prose placeholder:text-slate-400 text-slate-900"
+                className="lg:hidden border-none focus:ring-0 w-full border-white rounded-t-md p-4 prose placeholder:text-slate-400 text-slate-900"
                 rows={4}
                 maxLength={280}
                 resize={"none"}
@@ -149,10 +186,21 @@ export default function HomePage({ user, balance }) {
                 <button
                   type="submit"
                   disabled={imageResult.status != "ready"}
-                  className="w-full h-full text-center px-6 py-4 border-t border-slate-200 hover:bg-slate-50 rounded-b"
+                  className={
+                    imageResult.status != "ready"
+                      ? "lg:hidden w-full h-full text-center px-6 py-4 border-t border-slate-200 hover:bg-slate-50 rounded-b text-slate-300"
+                      : "lg:hidden w-full h-full bg-slate-900 text-center px-6 py-4 border-t border-slate-200 hover:bg-slate-900/90 rounded-b text-white"
+                  }
                 >
                   <div className="flex items-center justify-center space-x-2 ">
-                    <Image src="/icon_usdc.png" height={20} width={20}></Image>
+                    <Image
+                      src="/icon_usdc.png"
+                      height={20}
+                      width={20}
+                      className={
+                        imageResult.status != "ready" ? "opacity-30" : ""
+                      }
+                    ></Image>
                     <h6 className="text-base font-semibold tracking-wide">
                       Generate $0.05
                     </h6>
@@ -169,7 +217,7 @@ export default function HomePage({ user, balance }) {
                   </p>
                   <div className="h-0 border-t border-slate-200 w-full ml-4"></div>
                 </div>
-                <div className="aspect-square bg-slate-300 rounded relative">
+                <div className="aspect-square bg-slate-300 rounded relative max-w-7xl">
                   <Image
                     src={imageResult.imageUrl}
                     layout="fill"
@@ -180,7 +228,7 @@ export default function HomePage({ user, balance }) {
               </>
             ) : (
               <>
-                <p className="text-slate-400 text-xs tracking-wide pt-2">
+                <p className="text-slate-400 text-xs tracking-wide pt-2 lg:text-right">
                   You will only be charged for successful generations
                 </p>
                 <div className="flex items-center my-8">
@@ -189,7 +237,7 @@ export default function HomePage({ user, balance }) {
                   </p>
                   <div className="h-0 border-t border-slate-200 w-full ml-4"></div>
                 </div>
-                <div className="grid grid-cols-2 gap-2 ">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 ">
                   {imgList.map((imageUrl) => (
                     <div
                       className="aspect-square bg-slate-300 rounded relative"
