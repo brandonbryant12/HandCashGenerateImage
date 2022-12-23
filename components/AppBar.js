@@ -16,7 +16,7 @@ export default function AppBar({ user, balance }) {
   return (
     <>
       <div className="mx-auto w-full p-6 border-b border-slate-200 bg-slate-100">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link href="/">
