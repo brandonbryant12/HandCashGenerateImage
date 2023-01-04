@@ -61,13 +61,15 @@ export default function HomePage({ user, balance }) {
 
   const createImage = async (input) => {
     setImageResult({ status: "pending" });
-
+    console.log({input})
     const response = await fetch(`/api/createImage`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ input }),
     });
-    setImageResult(await response.json());
+    const result = await response.json();
+    console.log({ result })
+    setImageResult(result);
   };
 
   const getImageHistory = async () => {
