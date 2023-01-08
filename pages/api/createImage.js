@@ -9,7 +9,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
     return res.status(404);
   }
   try {
-    const { authToken } = req.session;
+    const { user, authToken } = req.session;
 
     if (!authToken) {
       return res
@@ -17,11 +17,8 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         .json({ status: "error", error: "Expired authorization." });
     }
     console.log('createImage')
+    // const imageUrl = await new CreateImageUseCase(user.alias, req.body.input, authToken).execute();
     const imageUrl = await OpenAIService.createImage(req.body.input);
-    const paymentResult = await new HandCashService(authToken).pay({
-      receivers: [{ to: "gunner", amount: 0.05 }],
-      currencyCode: "USDC",
-    });
     return res.status(200).json({ status: "created", imageUrl });
   } catch (error) {
     console.log(error);

@@ -1,23 +1,18 @@
-import db from '../sql/init.js';
+// import { getConnection } from '../sql/init.js';
 
-export default class PromptRepository {
-    static checkInit = async () => {
-        if(!db.isInitialized) {
-            await db.init();
-            db.isInitialized = true;
-        } 
-    }
+// export default class PromptRepository {
+//     static create = async (alias, inputPrompt, imageUrl) => {
+//         const client = await getConnection();
+//         const query = `INSERT INTO "Prompts" (imageUrl, alias, prompt)
+//         VALUES ('${imageUrl},${alias},${inputPrompt}') ON CONFLICT DO NOTHING `;
+//         const result = await client.query(query);
+//         client.release();
+//         console.log(result);
+//         return result
+//     };
 
-    static create = async (alias, inputPrompt, imageUrl) => {
-        await this.checkInit();
-        return db.knex('prompts').insert({ alias, prompt: inputPrompt, imageUrl})
-    };
-
-    static getByAlias = async (alias) => {
-        await this.checkInit();
-        return db.knex('prompts').where({
-            alias,
-          }).select('*')
-    };
-}
+//     static getByAlias = async (alias) => {
+       
+//     };
+// }
 

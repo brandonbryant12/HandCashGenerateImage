@@ -1,31 +1,24 @@
-const knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-      filename: './data.db',
-    },
-    useNullAsDefault: true
-  });
+// require('dotenv').config()
+// const { parse } = require('pg-connection-string');
+// const { Pool } = require('pg')
+ 
+// const config = parse(process.env.postgres_database_url);
+// config.connectionTimeoutMillis = 30000;
+// const pool = new Pool(config)
 
-let isInitialized = false;
+// const initQuery = 'CREATE TABLE IF NOT EXISTS "Prompts" (imageUrl varchar, alias varchar, prompt varchar, created_at timestamp default current_timestamp, updated_at timestamp default current_timestamp);';
 
-const init = async () => {
-    try{
-        await knex.schema
-          .createTable('prompts', table => {
-            table.increments('id');
-            table.string('prompt');
-            table.string('imageUrl')
-            table.string('alias')
-            table
-              .integer('user_id')
-              .unsigned()
-              .references('users.id');
-          })
-    } catch(err) {
-        console.log(err);
-    }
-};
 
-const database = { knex, init, isInitialized };
+// async function initialize() {
+//   await pool.query(initQuery);
+// }
 
-export default database;
+// function getConnection() {
+//    return pool.connect();
+// }
+
+// ( async () => {
+//   await initialize();
+// })();
+
+// module.exports = { pool, initialize, getConnection };

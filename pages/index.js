@@ -12,7 +12,7 @@ import { BarLoader } from "react-spinners";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ query, req }) {
-    console.log(sessionOptions);
+    console.log('Server Side Props')
     if (!req.session?.user) {
       return {
         redirect: {
@@ -38,10 +38,6 @@ export const getServerSideProps = withIronSessionSsr(
 
 export default function HomePage({ user, balance }) {
   const [imageResult, setImageResult] = useState({ status: "none" });
-  const [imageHistoryResult, setImageHistoryResult] = useState({
-    status: "none",
-    images: [],
-  });
   const [input, setInput] = useState("");
 
   const imgList = [
@@ -70,14 +66,6 @@ export default function HomePage({ user, balance }) {
     const result = await response.json();
     console.log({ result })
     setImageResult(result);
-  };
-
-  const getImageHistory = async () => {
-    const response = await fetch(`/api/getImages`, {
-      method: "GET",
-      headers: { "content-type": "application/json" },
-    });
-    setImageHistoryResult(await response.json());
   };
 
   function isInputTextValid(text) {
